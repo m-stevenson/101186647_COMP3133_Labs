@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  lab03-database:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo/seed.js:/docker-entrypoint-initdb.d/seed.js
+
+  lab03-backend:
+    build: backend/
+    environment:
+      - PORT=3001
+      - DATABASE_URL=mongodb://lab03-database:27017/lab03
+    ports:
+      - "3001:3001"
+    depends_on:
+      - lab03-database
